@@ -1,0 +1,19 @@
+# Ignore compiled Python files
+__pycache__/
+*.pyc
+
+# Ignore Cython build artifacts
+*.so
+*.c
+*.o
+
+# Ignore build directories
+build/
+
+# Ignore any compiled executables
+main
+*.exe
+
+# Ignore temporary or backup files
+*.bak
+*~
