@@ -944,7 +944,7 @@ int run_solver(int argc, char* argv[]){
        return printStats(!solve(timeLimit, firstSol, use_info_order, use_apm, use_newfc, induced, verbose, D, Gp, Gt, 0));
     }
 
-    if(solves_pre(10,firstSol, use_info_order, use_apm, use_newfc, induced, verbose, D, Gp, Gt, 0, 0)) printStats(false);
+    if(solves_pre(10,firstSol, use_info_order, use_apm, use_newfc, induced, verbose, D, Gp, Gt, 0, 0)) return printStats(false);
     else{
         bool find = false;
         for(int u = 1;u <= 50;u++) {
