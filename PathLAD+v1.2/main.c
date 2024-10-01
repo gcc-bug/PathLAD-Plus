@@ -846,7 +846,8 @@ bool check_clique(int type, Tgraph* Gp, Tgraph* Gt){
 
 }
 
-int main(int argc, char* argv[]){
+
+int run_solver(int argc, char* argv[]){
 	// Parameters
 	char fileNameGp[1024]; 
 	char fileNameGt[1024];
