@@ -1,16 +1,26 @@
-CC = gcc
-CFLAGS = -g -Wall -fstrict-aliasing -std=c99 
+# Variables
+PYTHON = python3
+CYTHON_BUILD = $(PYTHON) setup.py build_ext --inplace
+TEST_SCRIPT = $(PYTHON) test.py
 
-test:main
-	@echo
-	@echo "Test 1: Partial subgraph isomorphism" 
-	./main -p pattern.txt -t target.txt  
-	@echo
-	@echo "Test 2: Induced subgraph isomorphism"
-	./main -p pattern.txt -t target.txt -i 
+# Default target: Build and run the test
+all: build run_test
 
-main:main.c allDiff.c graph.c lad.c domainsPath.c allDiff_large.c graph_large.c lad_large.c domainsPath_large.c solve_large.c
-	$(CC) $(CFLAGS) main.c solve_large.c -o $@
+# Build the Cython extension
+build:
+	$(CYTHON_BUILD)
 
+# Run the test script
+run_test:
+	$(TEST_SCRIPT)
 
+# Clean the build artifacts
+clean:
+	rm -rf build/
+	rm -f *.so
+	rm -f *.c
+	rm -f *.o
+	rm -rf __pycache__
 
+# Phony targets
+.PHONY: all build run_test clean
