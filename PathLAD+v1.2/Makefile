@@ -18,7 +18,7 @@ run_test:
 clean:
 	rm -rf build/
 	rm -f *.so
-	rm -f *.c
+	rm -f wrapper.c
 	rm -f *.o
 	rm -rf __pycache__
 
