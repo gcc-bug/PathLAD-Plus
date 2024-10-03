@@ -17,3 +17,5 @@ main
 # Ignore temporary or backup files
 *.bak
 *~
+
+*.txt
