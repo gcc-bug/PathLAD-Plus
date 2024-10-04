@@ -19,3 +19,5 @@ main
 *~
 
 *.txt
+
+!cz_2q_twolocalrandom_37.txt
