@@ -46,3 +46,8 @@ print(f"Output saved to: {temp_file}")
 # Read and print the content of the temp file
 res = parse_result(temp_file)
 print(res)
+
+# print("twice:")
+# temp_file = PathLADPlus.py_run_solver(args)
+# print(f"Output saved to: {temp_file}")
+# res = parse_result(temp_file)
