@@ -72,10 +72,10 @@ int max_tries = 1000;
 
 
 // Global variables
-int nbNodes = 1;      // number of nodes in the search tree
-int nbFail = 0;       // number of failed nodes in the search tree
-int nbSol = 0;        // number of solutions found
-int number_Sol = 100000;
+int nbNodes ;      // number of nodes in the search tree
+int nbFail ;       // number of failed nodes in the search tree
+int nbSol ;        // number of solutions found
+int number_Sol;
 struct rusage ru;     // reusable structure to get CPU time usage
 
 
@@ -92,9 +92,9 @@ struct rusage ru;     // reusable structure to get CPU time usage
 int sol[1500][6500];
 int Sum[6500];
 
-bool dense = false;
-bool very_dense = false;
-bool dense1 = false;
+bool dense;
+bool very_dense;
+bool dense1;
 
 void qs(int q[], int l, int r, Tgraph* Gt, int b)
 {
@@ -139,15 +139,15 @@ bool filter(bool induced, Tdomain* D, Tgraph* Gp, Tgraph* Gt){
     return true;
 }
 
-int restars = 0;
+int restars;
 
-int L = 1;
-int alldif = 0;
-int Base = 500;
-int bas = 10;
-int uss = 0;
-bool trans = false;
-bool firstus = true;
+int L;
+int alldif;
+int Base;
+int bas;
+int uss;
+bool trans;
+bool firstus;
 int Nnode;
 
 bool solve_dense(int timeLimit, bool firstSol, bool use_info_order, bool use_apm, bool use_newfc, bool induced, int verbose, Tdomain* D, Tgraph* Gp, Tgraph* Gt, int depth){
@@ -793,8 +793,8 @@ int G[2010][2010];
 int vis[2010];
 int cnt[2010];
 
-int ans = 0;
-int ans1 = 0;
+int ans;
+int ans1;
 
 int max(int a, int b){
 	if(a >= b) return a;
@@ -846,19 +846,49 @@ bool check_clique(int type, Tgraph* Gp, Tgraph* Gt){
 
 }
 
+void reset(){
+    // global variables
+    nbNodes = 1;      // number of nodes in the search tree
+    nbFail = 0;       // number of failed nodes in the search tree
+    nbSol = 0;        // number of solutions found
+    number_Sol = 100000;
 
-int run_solver(int argc, char* argv[]){
+    dense = false;
+    very_dense = false;
+    dense1 = false;
+
+    restars = 0;
+    L = 1;
+    alldif = 0;
+    Base = 500;
+    bas = 10;
+    uss = 0;
+    trans = false;
+    firstus = true;
+
+    ans = 0;
+    ans1 = 0;
+}
+
+int run_solver(int timeLimit,            // default value: 60
+               bool firstSol,          // default value: false
+               int number_Sol,             // default value: 1 or whatever is appropriate
+               bool induced,           // default value: false
+               int verbose,                // default value: 0
+               const char* fileNameGp,
+               const char* fileNameGt){
+
+    reset();
 	// Parameters
-	char fileNameGp[1024]; 
-	char fileNameGt[1024];
-	int timeLimit=60;   
-	int verbose = 0;       
-	bool induced = false; 
-    bool firstSol = false; 
-    
-	fileNameGp[0] = 0; 
-	fileNameGt[0] = 0;
-	parse(&timeLimit, &firstSol, &number_Sol, &induced, &verbose, fileNameGp, fileNameGt, argv, argc);
+	printf("timeLimit: %d\n", timeLimit);
+    printf("firstSol: %d\n", firstSol);
+    printf("number_Sol: %d\n", number_Sol);
+    printf("induced: %d\n", induced);
+    printf("verbose: %d\n", verbose);
+    printf("fileNameGp: %s\n", fileNameGp);
+    printf("fileNameGt: %s\n", fileNameGt);
+
+	// parse(&timeLimit, &firstSol, &number_Sol, &induced, &verbose, fileNameGp, fileNameGt, argv, argc);
 	if (verbose >= 2)
 		printf("Parameters: induced=%d firstSol=%d timeLimit=%d verbose=%d fileNameGp=%s fileNameGt=%s\n",
 			   induced,firstSol,timeLimit,verbose,fileNameGp,fileNameGt);

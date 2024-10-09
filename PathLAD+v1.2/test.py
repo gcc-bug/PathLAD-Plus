@@ -4,7 +4,7 @@ import PathLADPlus
 args = ["-p", "pattern.txt", "-t", "target.txt", "-f", "-s", "3600", "-v"]
 
 # Call the C function through Cython and get the temp file location
-temp_file = PathLADPlus.py_run_solver(args)
+temp_file = PathLADPlus.py_run_solver("pattern.txt", "target.txt", 60, 1, 10, 0, 1)
 
 def parse_soultion(solution_line):
     solution_part = solution_line.split(":")[1].strip()
@@ -47,7 +47,9 @@ print(f"Output saved to: {temp_file}")
 res = parse_result(temp_file)
 print(res)
 
-# print("twice:")
-# temp_file = PathLADPlus.py_run_solver(args)
-# print(f"Output saved to: {temp_file}")
-# res = parse_result(temp_file)
+print("twice:")
+temp_file = PathLADPlus.py_run_solver("pattern.txt", "target.txt", 60, 1, 10, 0, 1)
+
+print(f"Output saved to: {temp_file}")
+res = parse_result(temp_file)
+print(res)

@@ -4,33 +4,28 @@ from libc.stdio cimport FILE, fopen, freopen, stdout, fclose, fflush  # Importin
 import os
 import tempfile
 
-# Declare the function from the C code
+# Declare the updated C function with bint for boolean parameters
 cdef extern from "main.h":
-    int run_solver(int argc, char* argv[])
+    int run_solver(int timeLimit, bint firstSol, int number_Sol, bint induced, int verbose, const char* fileNameGp, const char* fileNameGt)
 
-# Python wrapper for the C function
-def py_run_solver(list args):
-    # Prepare arguments
-    cdef int argc = len(args) + 1  # Include the dummy argv[0]
-    cdef char** argv = <char**>malloc((argc + 1) * sizeof(char*))
+# Python wrapper for the updated C function
+def py_run_solver(str fileNameGp, str fileNameGt, int timeLimit=60, bint firstSol=False, int number_Sol=1, bint induced=False, int verbose=0):
+    # Convert Python strings to C strings for fileNameGp and fileNameGt
+    cdef char* c_fileNameGp
+    cdef char* c_fileNameGt
 
-    if argv == NULL:
-        raise MemoryError("Unable to allocate memory for argv")
+    # Allocate memory for fileNameGp and fileNameGt
+    if fileNameGp:
+        c_fileNameGp = <char*>malloc((len(fileNameGp) + 1) * sizeof(char))
+        strcpy(c_fileNameGp, fileNameGp.encode('utf-8'))
+    else:
+        c_fileNameGp = <char*>""  # Pass an empty string
 
-    # Use a dummy program name as argv[0]
-    program_name = b"program_name"
-    argv[0] = <char*>malloc((len(program_name) + 1) * sizeof(char))
-    strcpy(argv[0], program_name)
-
-    # Copy the arguments passed from Python to argv[1], argv[2], etc.
-    for i in range(len(args)):
-        arg_as_bytes = args[i].encode('utf-8')  # Convert Python string to bytes
-        argv[i + 1] = <char*>malloc((len(arg_as_bytes) + 1) * sizeof(char))  # Allocate memory for each argument
-        if argv[i + 1] == NULL:
-            raise MemoryError("Unable to allocate memory for argv[i+1]")
-        strcpy(argv[i + 1], arg_as_bytes)  # Copy the bytes into the allocated memory
-
-    argv[argc] = NULL  # Last argument must be NULL
+    if fileNameGt:
+        c_fileNameGt = <char*>malloc((len(fileNameGt) + 1) * sizeof(char))
+        strcpy(c_fileNameGt, fileNameGt.encode('utf-8'))
+    else:
+        c_fileNameGt = <char*>""  # Pass an empty string
 
     # Create a temporary file to save the output
     temp_file = tempfile.NamedTemporaryFile(delete=False, mode='w+', encoding='utf-8')
@@ -45,8 +40,8 @@ def py_run_solver(list args):
     stdout_backup = stdout
     freopen(temp_filename.encode('utf-8'), "w", stdout)
 
-    # Call the C function
-    result = run_solver(argc, argv)
+    # Call the C function with the modified arguments
+    result = run_solver(timeLimit, firstSol, number_Sol, induced, verbose, c_fileNameGp, c_fileNameGt)
 
     # Flush and restore stdout
     fflush(stdout)
@@ -55,10 +50,11 @@ def py_run_solver(list args):
     # Close the C file handle
     fclose(c_temp_file)
 
-    # Free allocated memory
-    for i in range(argc):
-        free(argv[i])
-    free(argv)
+    # Free allocated memory for fileNameGp and fileNameGt
+    if fileNameGp:
+        free(c_fileNameGp)
+    if fileNameGt:
+        free(c_fileNameGt)
 
     # Return the path to the temporary file containing the log
     return temp_filename
