@@ -1,5 +1,5 @@
 import PathLADPlus
-from utils import *
+from python.utils import *
 
 # Call the C function through Cython and get the temp file location
 temp_file = PathLADPlus.py_run_solver("pattern.txt", "target.txt", 60, 1, 10, 0, 1)
