@@ -1,6 +1,7 @@
 import rustworkx as rx
 import math
 import os
+from PathLADPlus import py_run_solver
 
 def parse_soultion(solution_line):
     solution_part = solution_line.split(":")[1].strip()
@@ -25,7 +26,7 @@ def parse_result(file_name):
         file_content = file.read()
     solution_lines = []
     for line in file_content.splitlines():
-        print(line)
+        # print(line)
         if line.startswith("Solution"):
             solution_lines.append(line)
     
@@ -109,7 +110,7 @@ def generate_grid_with_Rb(n, m, Rb):
 
 
 # Replace '*.txt' with your actual file path
-file_path = './bench/cz_2q_twolocalrandom_37.txt'
+file_path = 'bench/qv_36.txt'
 pattern_dirs = "pattern"
 n = 7
 m = 7
@@ -131,28 +132,11 @@ export_graph(grid_graph,target_path)
 
 res = []
 for file in os.listdir(pattern_dirs):
-    if file.endswith(".txt") and '21' not in file:
-        from PathLADPlus import py_run_solver
+    if file.endswith(".txt"):
         pattern_path = os.path.join(pattern_dirs,file)
-        print(pattern_path)
-        # args = ["-p", pattern_path, "-t", target_path, "-s", str(time), "-v", "-h"]
-        # if only_first:
-        #     args.append("-f")
-        # if induced:
-        #     args.append("-i")
-        # if soultion_number:
-        #     args.append("-n")
-        #     args.append(str(soultion_number))
-        # print(args)
-        args = ["-p", pattern_path, "-t", pattern_path, "-f", "-s", "3600", "-v", '--']
-        try:
-            res_file = py_run_solver(args)
-            print(res_file)
-            res.append(parse_result(res_file))
-        except:
-            print(f"{pattern_path} problem")
-            continue
+        res_file=py_run_solver(pattern_path, target_path, time, only_first, soultion_number, induced, 1)
+        res.append(parse_result(res_file))
     else:
         continue
-    print(res)
+print(res)
     
