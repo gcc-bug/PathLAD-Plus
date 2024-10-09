@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(PathLAD-Plus VERSION 1.2.1 LANGUAGES C)
+project(PathLAD-Plus VERSION 1.2.1 LANGUAGES C CXX)
 
 # Set the C standard to C99
 set(CMAKE_C_STANDARD 99)
@@ -28,3 +28,9 @@ set(SOURCES
 )
 
 message(STATUS "PathLAD-Plus Version: ${PathLAD-Plus_VERSION}")
+
+# Find pybind11 package
+find_package(pybind11 REQUIRED)
+pybind11_add_module(PathLADPlus ${SRC_DIR}/bindings.cpp)
+# Link the pybind11 module
+set_target_properties(PathLADPlus PROPERTIES LINKER_LANGUAGE CXX)
