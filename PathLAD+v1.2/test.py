@@ -1,7 +1,7 @@
 import PathLADPlus
 import numpy as np
 
-def create_graph_python(nb_vertices, edges):
+def create_graph_python(nb_vertices, edges, isDirected = True):
     """
     Create a graph using the Tgraph struct in Python.
     :param nb_vertices: Number of vertices in the graph
@@ -9,31 +9,36 @@ def create_graph_python(nb_vertices, edges):
     :return: Tgraph object
     """
     # Temporary data structures to collect the information
-    isLoop = np.zeros(nb_vertices, dtype=bool)
-    nbAdj = np.zeros(nb_vertices, dtype=int)
-    nbSucc = np.zeros(nb_vertices, dtype=int)
-    nbPred = np.zeros(nb_vertices, dtype=int)
+    isLoop = [False for _ in range(nb_vertices)]
+    nbAdj = [0 for _ in range(nb_vertices)]
+    nbSucc = [0 for _ in range(nb_vertices)]
+    nbPred = [0 for _ in range(nb_vertices)]
     adj = [[] for _ in range(nb_vertices)]
     edgeDirection = [['0'] * nb_vertices for _ in range(nb_vertices)]  # Initialize as char '0'
 
-    maxDegree = 0
-    isDirected = True
 
     # Populate the temporary data structures
     for i, j in edges:
         if i == j:
             isLoop[i] = True
         else:
-            nbSucc[i] += 1
-            nbAdj[i] += 1
-            nbAdj[j] += 1
-            adj[i].append(j)
-            adj[j].append(i)
-            edgeDirection[i][j] = '1'
-            edgeDirection[j][i] = '2'
+            if isDirected:
+                if (j,i) not in edges:
+                    nbSucc += 1
+                nbAdj[i] += 1
+                nbAdj[j] += 1
+                adj[i].append(j)
+                adj[j].append(i)
+                edgeDirection[i][j] = '1'
+                edgeDirection[j][i] = '2'
+            else:
+                nbAdj[i] += 1
+                nbAdj[j] += 1
+                adj[i].append(j)
+                adj[j].append(i)
+                edgeDirection[i][j] = '3'
 
-            # Update max degree
-            maxDegree = max(maxDegree, nbSucc[i])
+    maxDegree = max(nbAdj)
 
     # Now create the graph using the initialize_graph method
     graph = PathLADPlus.Tgraph()
@@ -41,14 +46,13 @@ def create_graph_python(nb_vertices, edges):
     # Initialize the graph using all collected data
     graph.initialize_graph(
         nb_vertices, 
-        isLoop.tolist(), 
-        nbAdj.tolist(), 
-        nbSucc.tolist(), 
-        nbPred.tolist(), 
+        isLoop, 
+        nbAdj, 
+        nbSucc, 
+        nbPred, 
         adj, 
         edgeDirection,  # Ensure it's list of lists of strings (chars)
-        maxDegree,
-        isDirected
+        maxDegree
     )
 
     return graph

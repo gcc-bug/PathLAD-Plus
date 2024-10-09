@@ -15,7 +15,7 @@ PYBIND11_MODULE(PathLADPlus, m) {
         .def("initialize_graph", [](Tgraph &g, int nbVertices, const std::vector<bool>& isLoop,
                                     const std::vector<int>& nbAdj, const std::vector<int>& nbSucc, 
                                     const std::vector<int>& nbPred, const std::vector<std::vector<int>>& adj, 
-                                    const std::vector<std::vector<char>>& edgeDirection, int maxDegree, bool isDirected) {
+                                    const std::vector<std::vector<char>>& edgeDirection, int maxDegree) {
             // Set the number of vertices
             g.nbVertices = nbVertices;
 
@@ -52,7 +52,16 @@ PYBIND11_MODULE(PathLADPlus, m) {
             // Set the maximum degree
             g.maxDegree = maxDegree;
 
-            g.isDirected = isDirected;
+            // Check if the graph is directed
+            g.isDirected = false;
+            for (int i = 0; i < nbVertices; ++i) {
+                for (int j : adj[i]) {
+                    if (g.edgeDirection[i][j] == '1' || g.edgeDirection[i][j] == '2') {
+                        g.isDirected = true;
+                        return;
+                    }
+                }
+            }
         })
         .def_property("isLoop", 
             [](Tgraph &g) { return std::vector<bool>(g.isLoop, g.isLoop + g.nbVertices); },
