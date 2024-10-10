@@ -46,6 +46,10 @@
 #pragma GCC optimize("inline-functions-called-once")
 #pragma GCC optimize("-fdelete-null-pointer-checks")
 
+
+#include <stdbool.h>
+#include "global.h"
+
 static bool compatibleVertexLabels(int l1, int l2){
 	// return true iff a vertex labelled with l1 may be matched with a vertex labelled with l2
 	return (l1 <= l2);

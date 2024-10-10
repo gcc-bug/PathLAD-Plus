@@ -1,4 +1,7 @@
 
+#include <stdbool.h>
+#include "global.h"
+
 static int searchs_domain(Tgraph* graph, int u, int v){
     int ans = 0;
     //printf("%d %d\n",u,v);

@@ -4,6 +4,9 @@
 #define toBeDeleted 3
 #define deleted 4
 
+#include <stdbool.h>
+#include "global.h"
+
 static void addToDelete(int u, int* list, int* nb, int* marked){
 	if (marked[u]<toBeDeleted){
 		list[(*nb)++]=u;

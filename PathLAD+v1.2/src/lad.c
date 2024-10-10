@@ -43,6 +43,9 @@
 #pragma GCC optimize("inline-functions-called-once")
 #pragma GCC optimize("-fdelete-null-pointer-checks")
 
+#include <stdbool.h>
+#include "global.h"
+
 bool checkLAD(bool induced, int u, int v, Tdomain* D, Tgraph* Gp, Tgraph* Gt){
 	// return true if G_(u,v) has a adj(u)-covering matching; false otherwise
 	int u2, v2, i, j;
