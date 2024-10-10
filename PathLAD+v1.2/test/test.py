@@ -1,9 +1,9 @@
 import PathLADPlus
 import numpy as np
 
-def create_graph_python(nb_vertices, edges, isDirected = True):
+def create_graph_python(nb_vertices, edges):
     """
-    Create a graph using the Tgraph struct in Python.
+    Create a undirectedgraph using the Tgraph struct in Python.
     :param nb_vertices: Number of vertices in the graph
     :param edges: List of tuples representing edges (i, j)
     :return: Tgraph object
@@ -22,21 +22,11 @@ def create_graph_python(nb_vertices, edges, isDirected = True):
         if i == j:
             isLoop[i] = True
         else:
-            if isDirected:
-                if (j,i) not in edges:
-                    nbSucc += 1
-                nbAdj[i] += 1
-                nbAdj[j] += 1
-                adj[i].append(j)
-                adj[j].append(i)
-                edgeDirection[i][j] = '1'
-                edgeDirection[j][i] = '2'
-            else:
-                nbAdj[i] += 1
-                nbAdj[j] += 1
-                adj[i].append(j)
-                adj[j].append(i)
-                edgeDirection[i][j] = '3'
+            nbAdj[i] += 1
+            nbAdj[j] += 1
+            adj[i].append(j)
+            adj[j].append(i)
+            edgeDirection[i][j] = '3'
 
     maxDegree = max(nbAdj)
 
