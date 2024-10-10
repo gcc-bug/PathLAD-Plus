@@ -274,6 +274,7 @@ Tgraph* createGraph(char* fileName, bool isPatternGraph, int* nbIsolated){
 			graph->isDirected = (graph->edgeDirection[i][graph->adj[i][j]]==1) || (graph->edgeDirection[i][graph->adj[i][j]]==2);
 		}
 	}
-	return graph;
+    printf("finished\n");
+    return graph;
 }
 #endif

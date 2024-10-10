@@ -27,6 +27,10 @@ set(SOURCES
     ${SRC_DIR}/compatibility.c
 )
 
+# Create the library (static or shared)
+add_library(pathladplus_lib STATIC ${SOURCES})
+set_target_properties(pathladplus_lib PROPERTIES VERSION ${PathLAD-Plus_VERSION})
+
 message(STATUS "PathLAD-Plus Version: ${PathLAD-Plus_VERSION}")
 
 # Find pybind11 package
@@ -34,3 +38,5 @@ find_package(pybind11 REQUIRED)
 pybind11_add_module(PathLADPlus ${SRC_DIR}/bindings.cpp)
 # Link the pybind11 module
 set_target_properties(PathLADPlus PROPERTIES LINKER_LANGUAGE CXX)
+
+add_subdirectory(test)
