@@ -872,7 +872,7 @@ void reset(){
 
 int run_solver(int timeLimit,            // default value: 60
                bool firstSol,          // default value: false
-               int number_Sol,             // default value: 1 or whatever is appropriate
+               int number_sol,             // default value: 1 or whatever is appropriate
                bool induced,           // default value: false
                int verbose,                // default value: 0
                const char* fileNameGp,
@@ -880,6 +880,7 @@ int run_solver(int timeLimit,            // default value: 60
 
     reset();
 	// Parameters
+    number_Sol = number_sol;
 	printf("timeLimit: %d\n", timeLimit);
     printf("firstSol: %d\n", firstSol);
     printf("number_Sol: %d\n", number_Sol);
